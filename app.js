@@ -12,12 +12,18 @@ function getComputerChoice() {
     return selectedChoice;
 }
 
+function isValid(input) {
+    if (input === "rock" | input === "paper" | input === "scissors") {
+        return true;
+    }
+    return false;
+}
+
 /* TODO: Outsource validity check to other function */
 function getHumanChoice() {
-    let choice = prompt("Pick your move: ");
-    choice = choice.toLowerCase();
+    let choice = prompt("Pick your move: ").toLowerCase();
 
-    while (!(choice === "rock" | choice === "paper" | choice === "scissors")) {
+    while (!isValid(choice)) {
         alert("Invalid move. Pick one of the following valid options: Rock, Paper, Scissors");
         choice = prompt("Pick your move: ");
     } 
@@ -83,7 +89,7 @@ function determineWinner(computerScore, humanScore) {
         return `You won the game with a score of ${humanScore}:${computerScore}!`;
     }
     
-    return `The game ended with a tie! The final score is ${humanScore}:${computerScore}`; 
+    return `The game ended with a tie! The final score is ${humanScore}:${computerScore}!`; 
 }
 
 function playGame(gameCount) {
