@@ -9,3 +9,15 @@ function getComputerChoice() {
 
     return selectedChoice;
 }
+
+function getHumanChoice() {
+    let choice = prompt("Pick your move: ");
+    choice = choice.toLowerCase();
+
+    while (!(choice === "rock" | choice === "paper" | choice === "scissors")) {
+        alert("Invalid move. Pick one of the following valid options: Rock, Paper, Scissors");
+        choice = prompt("Pick your move: ");
+    } 
+
+    return choice; 
+}
