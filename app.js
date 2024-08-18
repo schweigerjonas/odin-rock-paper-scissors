@@ -29,34 +29,87 @@ function playRound(computerChoice, humanChoice) {
     const winnerMessage = "You win! ";
     const loserMessage = "You lose! ";
     let announcement = "";
+
+    /* -1 : Computer won
+     *  0 : Draw
+     *  1 : User won
+     */
+    let winVal;
     
     if (computerChoice === humanChoice) {
         announcement = `It's a draw! Both selected ${humanChoice}.`;
+        winVal = 0;
     }
     if (computerChoice === "rock") {
-        if (humanChoice === "paper") annoucement = winnerMessage + "Paper beats Rock.";
-        if (humanChoice === "scissors") announcement = loserMessage + "Rock beats Scissors."; 
+        if (humanChoice === "paper") {
+            announcement = winnerMessage + "Paper beats Rock.";
+            winVal = 1; 
+        } 
+        if (humanChoice === "scissors") {
+            announcement = loserMessage + "Rock beats Scissors."; 
+            winVal = -1;
+        } 
     }
     if (computerChoice === "paper") {
-        if (humanChoice === "rock") annoucement = loserMessage + "Paper beats Rock.";
-        if (humanChoice === "scissors") announcement = winnerMessage + "Scissors beats Paper."; 
+        if (humanChoice === "rock") {
+            announcement = loserMessage + "Paper beats Rock.";
+            winVal = -1;
+        }
+        if (humanChoice === "scissors") {
+            announcement = winnerMessage + "Scissors beats Paper.";
+            winVal = 1; 
+        } 
     }
     if (computerChoice === "scissors") {
-        if (humanChoice === "rock") annoucement = winnerMessage + "Rock beats Scissors.";
-        if (humanChoice === "paper") announcement = loserMessage + "Scissors beats Paper."; 
+        if (humanChoice === "rock") {
+            announcement = winnerMessage + "Rock beats Scissors.";
+            winVal = 1;
+        } 
+        if (humanChoice === "paper") {
+            announcement = loserMessage + "Scissors beats Paper."; 
+            winVal = -1;
+        }
     }
-    console.log("This is the announcement: " + announcement);
+
     console.log(announcement);
+    return winVal;
+}
+
+function determineWinner(computerScore, humanScore) {
+    if (computerScore > humanScore) {
+        return `The computer won the game with a score of ${computerScore}:${humanScore}!`;
+    }
+    if (humanScore > computerScore) {
+        return `You won the game with a score of ${humanScore}:${computerScore}!`;
+    }
+    
+    return `The game ended with a tie! The final score is ${humanScore}:${computerScore}`; 
+}
+
+function playGame(gameCount) {
+    let humanScore = 0;
+    let computerScore = 0;
+    let humanSelection;
+    let computerSelection;
+    let roundWinner;
+    let winnerAnnouncement;
+
+    for (let i = 0; i < gameCount; i++) {
+        humanSelection = getHumanChoice();
+        computerSelection = getComputerChoice();
+
+        roundWinner = playRound(computerSelection, humanSelection);
+
+        if (roundWinner === 1) humanScore++;
+        if (roundWinner === -1) computerScore++;
+    }
+
+    winnerAnnouncement = determineWinner(computerScore, humanScore);
+    console.log(winnerAnnouncement); 
 }
 
 // Global Variables
 
-let humanScore = 0;
-let computerScore = 0;
-
 // Function Calls
 
-let humanSelection = getHumanChoice();
-let computerSelection = getComputerChoice();
-
-playRound(computerSelection, humanSelection);
+playGame(5);
