@@ -19,7 +19,6 @@ function isValid(input) {
     return false;
 }
 
-/* TODO: Outsource validity check to other function */
 function getHumanChoice() {
     let choice = prompt("Pick your move: ").toLowerCase();
 
@@ -77,7 +76,7 @@ function playRound(computerChoice, humanChoice) {
         }
     }
 
-    console.log(announcement);
+    resultAnnouncement.textContent = announcement;
     return winVal;
 }
 
@@ -92,30 +91,63 @@ function determineWinner(computerScore, humanScore) {
     return `The game ended with a tie! The final score is ${humanScore}:${computerScore}!`; 
 }
 
-function playGame(gameCount) {
-    let humanScore = 0;
-    let computerScore = 0;
-    let humanSelection;
-    let computerSelection;
-    let roundWinner;
-    let winnerAnnouncement;
+// function playGame(gameCount) {
+//     let humanScore = 0;
+//     let computerScore = 0;
+//     let humanSelection;
+//     let computerSelection;
+//     let roundWinner;
+//     let winnerAnnouncement;
 
-    for (let i = 0; i < gameCount; i++) {
-        humanSelection = getHumanChoice();
-        computerSelection = getComputerChoice();
+//     for (let i = 0; i < gameCount; i++) {
+//         humanSelection = getHumanChoice();
+//         computerSelection = getComputerChoice();
 
-        roundWinner = playRound(computerSelection, humanSelection);
+//         roundWinner = playRound(computerSelection, humanSelection);
 
-        if (roundWinner === 1) humanScore++;
-        if (roundWinner === -1) computerScore++;
+        // if (roundWinner === 1) humanScore++;
+        // if (roundWinner === -1) computerScore++;
+//     }
+
+//     winnerAnnouncement = determineWinner(computerScore, humanScore);
+//     console.log(winnerAnnouncement); 
+// }
+
+// playGame(5);
+
+let humanScore = 0;
+let computerScore = 0;
+let roundWinner;
+let score;
+let winnerAnnouncement;
+
+const announcementContainer = document.querySelector(".announcementContainer");
+const resultAnnouncement = document.createElement("div");
+const scoreAnnouncement = document.createElement("div");
+
+announcementContainer.appendChild(resultAnnouncement);
+announcementContainer.appendChild(scoreAnnouncement);
+
+const buttonContainer = document.querySelector("#buttonContainer");
+buttonContainer.addEventListener("click", (event) => {
+    let target = event.target;
+    
+    roundWinner = playRound(getComputerChoice(), target.id);
+
+    if (roundWinner === 1) humanScore++;
+    if (roundWinner === -1) computerScore++;
+
+    score = `Computer Score: ${computerScore}
+    Your Score: ${humanScore}`
+    scoreAnnouncement.textContent = score;
+    console.log(score);
+
+    if (computerScore === 5 || humanScore === 5) {
+        winnerAnnouncement = determineWinner(computerScore, humanScore);
+
+        announcementContainer.removeChild(scoreAnnouncement);
+        announcementContainer.removeChild(resultAnnouncement);
+
+        announcementContainer.textContent = winnerAnnouncement;
     }
-
-    winnerAnnouncement = determineWinner(computerScore, humanScore);
-    console.log(winnerAnnouncement); 
-}
-
-// Global Variables
-
-// Function Calls
-
-playGame(5);
+});
